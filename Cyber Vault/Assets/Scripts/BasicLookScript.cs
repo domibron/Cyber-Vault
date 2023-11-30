@@ -13,15 +13,12 @@ namespace CyberVault
 
 
 		private Transform _playerBody;
-		private Transform _camera;
 
 		private float _yRotation;
 
 		// Start is called before the first frame update
 		void Start()
 		{
-			// yes this can work with child in child objects.
-			_camera = GetComponentInChildren<Camera>().transform;
 			_playerBody = GetComponent<Transform>();
 		}
 

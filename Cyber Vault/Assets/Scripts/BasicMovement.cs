@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions.Must;
 
 namespace CyberVault
 {
@@ -36,14 +37,14 @@ namespace CyberVault
 
 		private void HandleMovement()
 		{
-			Vector3 moveDirection = new();
+			Vector3 moveDirection = Vector3.zero;
 
 			moveDirection.x = Input.GetAxisRaw("Horizontal");
 			moveDirection.z = Input.GetAxisRaw("Vertical");
 
 			moveDirection = transform.right * moveDirection.x + transform.forward * moveDirection.z;
 
-			_characterContoller.Move(moveDirection * Time.deltaTime * Speed);
+			_characterContoller.Move(moveDirection * Speed * Time.deltaTime);
 		}
 
 		private void HandleGravity()
@@ -73,8 +74,7 @@ namespace CyberVault
 
 		private void HandleGroundCheck()
 		{
-
-			if (_characterContoller.isGrounded && Physics.Raycast(transform.position, -transform.up, 1.1f))
+			if (_characterContoller.isGrounded && Physics.Raycast(transform.position, -transform.up, 1.1f, ~(1 << 3)))
 			{
 				isGrounded = true;
 			}
