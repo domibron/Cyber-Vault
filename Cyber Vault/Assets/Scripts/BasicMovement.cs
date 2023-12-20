@@ -7,6 +7,10 @@ namespace CyberVault
 {
 	public class BasicMovement : MonoBehaviour
 	{
+		[HideInInspector] // no need to touch this
+		public bool Locked = false;
+
+
 		public float Speed = 5f;
 
 		public float Gravity = -9.81f;
@@ -20,6 +24,7 @@ namespace CyberVault
 
 		private bool isGrounded = false;
 
+
 		// Start is called before the first frame update
 		void Start()
 		{
@@ -29,8 +34,10 @@ namespace CyberVault
 		// Update is called once per frame
 		void Update()
 		{
-			HandleMovement();
 			HandleGravity();
+
+			if (Locked) return; // Stops movement
+			HandleMovement();
 			HandleJumping();
 			HandleGroundCheck();
 		}
@@ -43,6 +50,8 @@ namespace CyberVault
 			moveDirection.z = Input.GetAxisRaw("Vertical");
 
 			moveDirection = transform.right * moveDirection.x + transform.forward * moveDirection.z;
+
+			moveDirection.Normalize();
 
 			_characterContoller.Move(moveDirection * Speed * Time.deltaTime);
 		}

@@ -6,10 +6,13 @@ namespace CyberVault
 {
 	public class BasicLookScript : MonoBehaviour
 	{
+		[HideInInspector] // no need to touch this
+		public bool Locked = false;
+
+
 		public Transform CameraHolder;
 
 		public float Sensitivity = 1f;
-
 
 
 		private Transform _playerBody;
@@ -25,6 +28,8 @@ namespace CyberVault
 		// Update is called once per frame
 		void Update()
 		{
+			if (Locked) return;
+
 			Vector2 lookDirection = new();
 
 			lookDirection.x = Input.GetAxisRaw("Mouse X");
