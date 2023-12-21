@@ -6,11 +6,25 @@ namespace CyberVault
 {
 	public class Computer : MonoBehaviour
 	{
+		public static Computer Instance;
+
 		public bool UsingComputer = false;
 
 		public GameObject UIMain;
 
 		public GameObject[] UIElements;
+
+		void Awake()
+		{
+			if (Instance != null && Instance != this)
+			{
+				Destroy(this.gameObject);
+			}
+			else
+			{
+				Instance = this;
+			}
+		}
 
 		void Start()
 		{
@@ -58,7 +72,7 @@ namespace CyberVault
 			}
 		}
 
-		private void OpenScreen(int screenNumb)
+		public void OpenScreen(int screenNumb)
 		{
 			for (int i = 0; i < UIElements.Length; i++)
 			{
