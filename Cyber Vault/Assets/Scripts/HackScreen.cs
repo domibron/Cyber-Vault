@@ -23,8 +23,21 @@ namespace CyberVault
 			Player = 5
 		}
 
+		enum HackType
+		{
+			None = 0,
+			Door = 1,
+			Lasers = 2,
+			Turrets = 3
+		}
+
 		public Sprite StarSprite;
 		public Image Box;
+
+		public GameObject FaliureScreen;
+		public CanvasGroup FaliureCanvasGroup;
+		public GameObject SuccessScreen;
+		public CanvasGroup SuccessCanvasGroup;
 
 		public float Spacing = 5;
 
@@ -58,6 +71,8 @@ namespace CyberVault
 		private bool _failure = false;
 		private bool _allStarsCollected = false;
 		private bool _successful = false;
+
+		private HackType _hackType = HackType.None;
 
 		// Start is called before the first frame update
 		void Start()
@@ -99,7 +114,7 @@ namespace CyberVault
 		{
 			// print(StringArray(_hackScreenArrayInt));
 
-			if (_inPuzzle && !_failure)
+			if (_inPuzzle && !_failure && !_successful)
 			{
 
 				DrawHack(_hackScreenArrayInt, _firstTimeSetup);
@@ -115,51 +130,42 @@ namespace CyberVault
 
 				if (Input.GetKeyDown(KeyCode.W))
 				{
-					if (_hackScreenArrayInt[_currentPos.x - 1, _currentPos.y] == 5 || _hackScreenArrayInt[_currentPos.x - 1, _currentPos.y] == 2)
-					{
-						return;
-					}
+					if (_currentPos.x - 1 < 0) return;
 
-					if (_currentPos.x - 1 >= 0)
-					{
-						_currentPos += Vector2Int.left;
-					}
+					if (_hackScreenArrayInt[_currentPos.x - 1, _currentPos.y] == 5 || _hackScreenArrayInt[_currentPos.x - 1, _currentPos.y] == 2) return;
+
+					_currentPos += Vector2Int.left;
+
 				}
 				else if (Input.GetKeyDown(KeyCode.A))
 				{
-					if (_hackScreenArrayInt[_currentPos.x, _currentPos.y - 1] == 5 || _hackScreenArrayInt[_currentPos.x, _currentPos.y - 1] == 2)
-					{
-						return;
-					}
 
-					if (_currentPos.y - 1 >= 0)
-					{
-						_currentPos += Vector2Int.down;
-					}
+					if (_currentPos.y - 1 < 0) return;
+
+					if (_hackScreenArrayInt[_currentPos.x, _currentPos.y - 1] == 5 || _hackScreenArrayInt[_currentPos.x, _currentPos.y - 1] == 2) return;
+
+					_currentPos += Vector2Int.down;
+
 				}
 				else if (Input.GetKeyDown(KeyCode.S))
 				{
-					if (_hackScreenArrayInt[_currentPos.x + 1, _currentPos.y] == 5 || _hackScreenArrayInt[_currentPos.x + 1, _currentPos.y] == 2)
-					{
-						return;
-					}
 
-					if (_currentPos.x + 1 < XAmmount)
-					{
-						_currentPos += Vector2Int.right;
-					}
+					if (_currentPos.x + 1 >= XAmmount) return;
+
+					if (_hackScreenArrayInt[_currentPos.x + 1, _currentPos.y] == 5 || _hackScreenArrayInt[_currentPos.x + 1, _currentPos.y] == 2) return;
+
+					_currentPos += Vector2Int.right;
+
 				}
 				else if (Input.GetKeyDown(KeyCode.D))
 				{
-					if (_hackScreenArrayInt[_currentPos.x, _currentPos.y + 1] == 5 || _hackScreenArrayInt[_currentPos.x, _currentPos.y + 1] == 2)
-					{
-						return;
-					}
 
-					if (_currentPos.y + 1 < YAmmount)
-					{
-						_currentPos += Vector2Int.up;
-					}
+					if (_currentPos.y + 1 >= YAmmount) return;
+
+					if (_hackScreenArrayInt[_currentPos.x, _currentPos.y + 1] == 5 || _hackScreenArrayInt[_currentPos.x, _currentPos.y + 1] == 2) return;
+
+					_currentPos += Vector2Int.up;
+
 				}
 
 				if (_hackScreenArrayInt[_currentPos.x, _currentPos.y] != (int)HackPuzzleItems.Player)
@@ -255,7 +261,21 @@ namespace CyberVault
 
 			DrawHack(_hackScreenArrayInt);
 
-			yield return new WaitForSeconds(2f);
+			float localTime = 0f;
+			float targTime = localTime + 5f;
+
+			FaliureScreen.SetActive(true);
+
+			while (localTime < targTime)
+			{
+				localTime += Time.deltaTime;
+
+				FaliureCanvasGroup.alpha = Mathf.Abs(Mathf.Sin(localTime * 3f));
+
+				yield return new();
+			}
+
+			yield return new();
 
 			ResetPuzzle();
 
@@ -268,7 +288,34 @@ namespace CyberVault
 
 			DrawHack(_hackScreenArrayInt);
 
-			yield return new WaitForSeconds(2f);
+			float localTime = 0f;
+			float targTime = localTime + 5f;
+
+			SuccessScreen.SetActive(true);
+
+			while (localTime < targTime)
+			{
+				localTime += Time.deltaTime;
+
+				SuccessCanvasGroup.alpha = Mathf.Abs(Mathf.Sin(localTime * 3f));
+
+				yield return new();
+			}
+
+			if (_hackType == HackType.Door)
+			{
+				GameManager.Instance.DoorUnlocked = true;
+			}
+			else if (_hackType == HackType.Lasers)
+			{
+				GameManager.Instance.LasersOnline = false;
+			}
+			else if (_hackType == HackType.Turrets)
+			{
+				GameManager.Instance.TurretsOnline = false;
+			}
+
+			yield return new();
 
 			ResetPuzzle();
 
@@ -277,6 +324,12 @@ namespace CyberVault
 
 		private void ResetPuzzle()
 		{
+			FaliureCanvasGroup.alpha = 0;
+			FaliureScreen.SetActive(false);
+
+			SuccessCanvasGroup.alpha = 0;
+			SuccessScreen.SetActive(false);
+
 			_hackScreenArrayInt = new int[XAmmount, YAmmount];
 
 			foreach (Image image in _hackScreenArrayImages)
@@ -291,6 +344,9 @@ namespace CyberVault
 
 			DrawHack(HackPuzzleLayouts.Base);
 
+			_hackType = HackType.None;
+
+
 			_starLocations.Clear();
 
 			_firstTimeSetup = true;
@@ -298,26 +354,38 @@ namespace CyberVault
 			_inPuzzle = false;
 
 			_failure = false;
+
+			_successful = false;
 		}
 
 
-		public void EasyPuzzleOne()
+		public void HackDoor()
 		{
-			StartPuzle(HackPuzzleLayouts.Easy1);
+			StartPuzle(HackPuzzleLayouts.Easy1, HackType.Door);
 		}
 
-		public void EasyPuzzleTwo()
+		public void HackLasers()
 		{
-			StartPuzle(HackPuzzleLayouts.Easy2);
+			StartPuzle(HackPuzzleLayouts.Easy2, HackType.Lasers);
 		}
 
-		private void StartPuzle(int[,] array)
+		public void HackTurrets()
 		{
+			StartPuzle(HackPuzzleLayouts.Easy2, HackType.Turrets);
+		}
+
+
+		private void StartPuzle(int[,] array, HackType hackType)
+		{
+			StopAllCoroutines();
+
 			ResetPuzzle();
 
 			CopyArray(array, ref _hackScreenArrayInt);
 
 			DrawHack(array, true);
+
+			_hackType = hackType;
 
 			_inPuzzle = true;
 
@@ -441,7 +509,7 @@ namespace CyberVault
 					else if (array[x, y] == (int)HackPuzzleItems.Player)
 					{
 						// if game over red otherwise green
-						_hackScreenArrayImages[x, y].sprite = null;
+						//_hackScreenArrayImages[x, y].sprite = null;
 
 						// print($"{_currentPos} {x} {y}");
 

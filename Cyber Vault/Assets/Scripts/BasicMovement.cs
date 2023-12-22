@@ -83,7 +83,7 @@ namespace CyberVault
 
 		private void HandleGroundCheck()
 		{
-			if (_characterContoller.isGrounded && Physics.Raycast(transform.position, -transform.up, 1.1f, ~(1 << 3)))
+			if (_characterContoller.isGrounded || Physics.Raycast(transform.position, -transform.up, 1.1f, ~(1 << 3)))
 			{
 				isGrounded = true;
 			}

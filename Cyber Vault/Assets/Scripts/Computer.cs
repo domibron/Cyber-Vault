@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace CyberVault
 {
@@ -13,6 +14,14 @@ namespace CyberVault
 		public GameObject UIMain;
 
 		public GameObject[] UIElements;
+
+		public Button DoorButton;
+		public Button LaserButton;
+		public Button TurretsButton;
+
+		public Button LittleDoorButton;
+		public Button LittleLaserButton;
+		public Button LittleTurretsButton;
 
 		void Awake()
 		{
@@ -38,6 +47,27 @@ namespace CyberVault
 			if (UsingComputer && Input.GetKeyDown(KeyCode.Escape))
 			{
 				ExitComputer();
+			}
+
+			if (UsingComputer)
+			{
+				if (GameManager.Instance.DoorUnlocked && DoorButton.interactable)
+				{
+					DoorButton.interactable = false;
+					LittleDoorButton.interactable = false;
+				}
+
+				if (!GameManager.Instance.LasersOnline && LaserButton.interactable)
+				{
+					LaserButton.interactable = false;
+					LittleLaserButton.interactable = false;
+				}
+
+				if (!GameManager.Instance.TurretsOnline && TurretsButton.interactable)
+				{
+					TurretsButton.interactable = false;
+					LittleTurretsButton.interactable = false;
+				}
 			}
 		}
 
