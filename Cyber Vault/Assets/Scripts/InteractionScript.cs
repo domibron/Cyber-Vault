@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace CyberVault
@@ -38,7 +39,7 @@ namespace CyberVault
 
 		void Check(Ray ray)
 		{
-			_selectedObject = null;
+			Transform selectedObject = null;
 
 			var closest = 0f;
 			var distance = float.MaxValue;
@@ -59,11 +60,28 @@ namespace CyberVault
 				{
 					closest = lookPercentage;
 					distance = distanceCalc;
-					_selectedObject = _interactables[i].transform;
+					selectedObject = _interactables[i].transform;
+
+					if (selectedObject != _selectedObject)
+					{
+						if (_selectedObject != null) _selectedObject.GetComponent<Outline>().OutlineWidth = 0;
+						_selectedObject = selectedObject;
+						//if (_selectedObject != null) _selectedObject.GetComponent<Outline>().OutlineWidth = 10;
+					}
 				}
+				else
+				{
 
+					if (_selectedObject == _interactables[i].transform)
+					{
+						_selectedObject.GetComponent<Outline>().OutlineWidth = 0;
+						//selectedObject = null;
+						_selectedObject = null;
+					}
+
+					_interactables[i].GetComponent<Outline>().OutlineWidth = 0;
+				}
 			}
-
 		}
 
 		// Update is called once per frame
@@ -73,11 +91,21 @@ namespace CyberVault
 
 			if (_selectedObject != null)
 			{
-				if (Input.GetKeyDown(KeyCode.E))
+				_selectedObject.GetComponent<Outline>().OutlineWidth = 10;
+
+
+				if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.F))
 				{
 					_selectedObject.GetComponent<ItemInteract>().OnInteraction();
 				}
 			}
+		}
+
+		public void RemoveObject(GameObject obj)
+		{
+			_interactables.Remove(obj);
+
+			if (_selectedObject == obj.transform) _selectedObject = null;
 		}
 	}
 }

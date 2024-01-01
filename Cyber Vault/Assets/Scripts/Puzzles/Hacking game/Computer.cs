@@ -23,6 +23,8 @@ namespace CyberVault
 		public Button LittleLaserButton;
 		public Button LittleTurretsButton;
 
+		public bool OverridingEscape = false;
+
 		void Awake()
 		{
 			if (Instance != null && Instance != this)
@@ -44,7 +46,7 @@ namespace CyberVault
 
 		void Update()
 		{
-			if (UsingComputer && Input.GetKeyDown(KeyCode.Escape))
+			if (UsingComputer && Input.GetKeyDown(KeyCode.Escape) && !OverridingEscape)
 			{
 				ExitComputer();
 			}

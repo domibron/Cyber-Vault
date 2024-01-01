@@ -12,7 +12,12 @@ namespace CyberVault
 		public Transform TurretBody;
 		public Transform TurretWeapon;
 
+		public Light Spot;
+		public Light Point;
+
 		public float Damage = 20;
+
+		public bool Active = true;
 
 		float x;
 		float z;
@@ -21,50 +26,59 @@ namespace CyberVault
 		// Start is called before the first frame update
 		void Start()
 		{
-
+			if (Player == null) Player = GameObject.FindWithTag("Player").transform;
 		}
 
 		// Update is called once per frame
 		void Update()
 		{
-			x = transform.position.x - Player.position.x;
-			z = transform.position.z - Player.position.z;
-			y = transform.position.y - Player.position.y;
+			if (GameManager.Instance.TurretsOnline != Active) Active = GameManager.Instance.TurretsOnline;
 
-			float yrot = Mathf.Atan(x / z) * (180 / Mathf.PI);
-			float xrot = Mathf.Atan(Mathf.Sqrt(z * z + x * x) / y) * (180 / Mathf.PI);
-
-			// inverting values.
-			if (z > 0) yrot = 180 - yrot;
-			//if (z > 0) xrot = 180 - xrot;
-
-			if (z > 0)
+			if (Active)
 			{
-				yrot *= -1;
+				x = transform.position.x - Player.position.x;
+				z = transform.position.z - Player.position.z;
+				y = transform.position.y - Player.position.y;
+
+				float yrot = Mathf.Atan(x / z) * (180 / Mathf.PI);
+				float xrot = Mathf.Atan(Mathf.Sqrt(z * z + x * x) / y) * (180 / Mathf.PI);
+
+				// inverting values.
+				if (z > 0) yrot = 180 - yrot;
+				//if (z > 0) xrot = 180 - xrot;
+
+				if (z > 0)
+				{
+					yrot *= -1;
+				}
+
+				xrot = 180 - xrot;
+
+				xrot -= 90;
+
+				TurretBody.localRotation = Quaternion.Euler(0, yrot, 0);
+				TurretWeapon.localRotation = Quaternion.Euler(xrot, 0, -90);
+
+				RaycastHit hit;
+
+				int layer = 6;
+				layer = 1 << layer;
+				layer = ~layer;
+
+				Physics.Raycast(TurretBody.position, Player.position - TurretBody.position, out hit, Vector3.Distance(TurretBody.position, Player.position), layer);
+
+				// move to IEnerator
+				if (hit.collider != null && hit.transform.gameObject.layer == 3)
+				{
+
+					Player.GetComponent<IHealth>()?.TakeDamage(Damage);
+				}
 			}
-
-			xrot = 180 - xrot;
-
-			xrot -= 90;
-
-			TurretBody.localRotation = Quaternion.Euler(0, yrot, 0);
-			TurretWeapon.localRotation = Quaternion.Euler(xrot, 0, -90);
-
-			RaycastHit hit;
-
-			int layer = 6;
-			layer = 1 << layer;
-			layer = ~layer;
-
-			Physics.Raycast(TurretBody.position, Player.position - TurretBody.position, out hit, Vector3.Distance(TurretBody.position, Player.position), layer);
-
-			// move to IEnerator
-			if (hit.collider != null && hit.transform.gameObject.layer == 3)
+			else
 			{
-
-				Player.GetComponent<IHealth>()?.TakeDamage(Damage);
+				Spot.intensity = 0;
+				Point.intensity = 0;
 			}
-
 		}
 	}
 }

@@ -76,6 +76,26 @@ namespace CyberVault
 		{
 			PlayerMouseVisible = !PlayerMouseVisible;
 		}
+
+		public void ComplpeateKey1()
+		{
+			HasBrokenKeyPartOne = true;
+		}
+
+		public void ComplpeateKey2()
+		{
+			HasBrokenKeyPartTwo = true;
+		}
+
+		public void RepairKey()
+		{
+			BorkenKeyFixed = true;
+		}
+
+		public void CollectGlassCutter()
+		{
+			HasGlassCutter = true;
+		}
 	}
 
 

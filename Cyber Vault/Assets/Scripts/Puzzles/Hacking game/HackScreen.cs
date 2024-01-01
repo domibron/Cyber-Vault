@@ -117,6 +117,8 @@ namespace CyberVault
 			if (_inPuzzle && !_failure && !_successful)
 			{
 
+				Computer.Instance.OverridingEscape = true;
+
 				DrawHack(_hackScreenArrayInt, _firstTimeSetup);
 
 				if (_firstTimeSetup) _firstTimeSetup = !_firstTimeSetup;
@@ -266,11 +268,15 @@ namespace CyberVault
 
 			FaliureScreen.SetActive(true);
 
-			while (localTime < targTime)
+			bool skip = false;
+
+			while (localTime < targTime && !skip)
 			{
 				localTime += Time.deltaTime;
 
 				FaliureCanvasGroup.alpha = Mathf.Abs(Mathf.Sin(localTime * 3f));
+
+				if (Input.GetKey(KeyCode.Escape)) skip = true;
 
 				yield return new();
 			}
@@ -293,15 +299,6 @@ namespace CyberVault
 
 			SuccessScreen.SetActive(true);
 
-			while (localTime < targTime)
-			{
-				localTime += Time.deltaTime;
-
-				SuccessCanvasGroup.alpha = Mathf.Abs(Mathf.Sin(localTime * 3f));
-
-				yield return new();
-			}
-
 			if (_hackType == HackType.Door)
 			{
 				GameManager.Instance.DoorUnlocked = true;
@@ -314,6 +311,20 @@ namespace CyberVault
 			{
 				GameManager.Instance.TurretsOnline = false;
 			}
+
+			bool skip = false;
+
+			while (localTime < targTime && !skip)
+			{
+				localTime += Time.deltaTime;
+
+				SuccessCanvasGroup.alpha = Mathf.Abs(Mathf.Sin(localTime * 3f));
+
+				if (Input.GetKey(KeyCode.Escape)) skip = true;
+
+				yield return new();
+			}
+
 
 			yield return new();
 
@@ -356,6 +367,8 @@ namespace CyberVault
 			_failure = false;
 
 			_successful = false;
+
+			Computer.Instance.OverridingEscape = false;
 		}
 
 
