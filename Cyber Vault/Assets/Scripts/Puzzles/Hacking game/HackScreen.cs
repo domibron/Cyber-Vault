@@ -129,12 +129,42 @@ namespace CyberVault
 
 				_touching = 0;
 
+				int possibleMoveCount = 4;
+
+				if (_currentPos.x - 1 < 0 || _hackScreenArrayInt[_currentPos.x - 1, _currentPos.y] == 5 || _hackScreenArrayInt[_currentPos.x - 1, _currentPos.y] == 2)
+				{
+					possibleMoveCount -= 1;
+				}
+
+				if (_currentPos.y - 1 < 0 || _hackScreenArrayInt[_currentPos.x, _currentPos.y - 1] == 5 || _hackScreenArrayInt[_currentPos.x, _currentPos.y - 1] == 2)
+				{
+					possibleMoveCount -= 1;
+				}
+
+				if (_currentPos.x + 1 >= XAmmount || _hackScreenArrayInt[_currentPos.x + 1, _currentPos.y] == 5 || _hackScreenArrayInt[_currentPos.x + 1, _currentPos.y] == 2)
+				{
+					possibleMoveCount -= 1;
+				}
+
+				if (_currentPos.y + 1 >= YAmmount || _hackScreenArrayInt[_currentPos.x, _currentPos.y + 1] == 5 || _hackScreenArrayInt[_currentPos.x, _currentPos.y + 1] == 2)
+				{
+					possibleMoveCount -= 1;
+				}
+
+				if (possibleMoveCount <= 0)
+				{
+					print("no more moves");
+					StartCoroutine(Failed());
+				}
 
 				if (Input.GetKeyDown(KeyCode.W))
 				{
 					if (_currentPos.x - 1 < 0) return;
 
-					if (_hackScreenArrayInt[_currentPos.x - 1, _currentPos.y] == 5 || _hackScreenArrayInt[_currentPos.x - 1, _currentPos.y] == 2) return;
+					if (_hackScreenArrayInt[_currentPos.x - 1, _currentPos.y] == 5 || _hackScreenArrayInt[_currentPos.x - 1, _currentPos.y] == 2)
+					{
+						return;
+					}
 
 					_currentPos += Vector2Int.left;
 
@@ -144,8 +174,10 @@ namespace CyberVault
 
 					if (_currentPos.y - 1 < 0) return;
 
-					if (_hackScreenArrayInt[_currentPos.x, _currentPos.y - 1] == 5 || _hackScreenArrayInt[_currentPos.x, _currentPos.y - 1] == 2) return;
-
+					if (_hackScreenArrayInt[_currentPos.x, _currentPos.y - 1] == 5 || _hackScreenArrayInt[_currentPos.x, _currentPos.y - 1] == 2)
+					{
+						return;
+					}
 					_currentPos += Vector2Int.down;
 
 				}
@@ -154,7 +186,10 @@ namespace CyberVault
 
 					if (_currentPos.x + 1 >= XAmmount) return;
 
-					if (_hackScreenArrayInt[_currentPos.x + 1, _currentPos.y] == 5 || _hackScreenArrayInt[_currentPos.x + 1, _currentPos.y] == 2) return;
+					if (_hackScreenArrayInt[_currentPos.x + 1, _currentPos.y] == 5 || _hackScreenArrayInt[_currentPos.x + 1, _currentPos.y] == 2)
+					{
+						return;
+					}
 
 					_currentPos += Vector2Int.right;
 
@@ -164,7 +199,10 @@ namespace CyberVault
 
 					if (_currentPos.y + 1 >= YAmmount) return;
 
-					if (_hackScreenArrayInt[_currentPos.x, _currentPos.y + 1] == 5 || _hackScreenArrayInt[_currentPos.x, _currentPos.y + 1] == 2) return;
+					if (_hackScreenArrayInt[_currentPos.x, _currentPos.y + 1] == 5 || _hackScreenArrayInt[_currentPos.x, _currentPos.y + 1] == 2)
+					{
+						return;
+					}
 
 					_currentPos += Vector2Int.up;
 
@@ -384,7 +422,7 @@ namespace CyberVault
 
 		public void HackTurrets()
 		{
-			StartPuzle(HackPuzzleLayouts.Easy2, HackType.Turrets);
+			StartPuzle(HackPuzzleLayouts.Easy3, HackType.Turrets);
 		}
 
 
@@ -587,16 +625,28 @@ namespace CyberVault
 		public static int[,] Easy1 = new int[8, 8]
 		{
 			{0,0,0,0,0,3,0,0},
-			{0,1,2,0,0,0,0,0},
-			{0,2,2,0,0,0,0,0},
-			{0,0,0,0,0,1,0,0},
-			{0,0,1,0,0,0,0,0},
-			{0,0,0,0,2,0,0,0},
-			{0,0,0,0,0,0,0,1},
+			{0,1,2,0,2,0,2,1},
+			{0,2,2,0,2,0,2,0},
+			{0,0,0,0,0,1,2,0},
+			{0,0,1,0,2,0,2,0},
+			{0,0,0,0,2,0,2,0},
+			{0,0,0,0,2,0,2,1},
 			{0,0,4,0,0,0,0,0}
 		};
 
 		public static int[,] Easy2 = new int[8, 8]
+		{
+			{0,0,3,0,0,0,0,0},
+			{0,1,0,0,0,0,0,0},
+			{0,0,0,0,0,0,0,0},
+			{0,0,0,0,0,1,0,0},
+			{0,0,1,1,1,0,0,0},
+			{0,0,0,0,0,0,0,0},
+			{0,0,0,0,0,0,0,1},
+			{0,0,0,0,0,0,4,0}
+		};
+
+		public static int[,] Easy3 = new int[8, 8]
 		{
 			{0,0,3,0,0,0,0,0},
 			{0,1,0,0,0,0,0,0},
