@@ -17,16 +17,35 @@ namespace CyberVault
 
 		public float Damage = 20;
 
+		public float FireRate = 1f;
+
 		public bool Active = true;
 
-		float x;
-		float z;
-		float y;
+
+
+		private AudioSource _audioSource;
+
+		public AudioClip ShotSFX;
+		public AudioClip BeepSFX;
+
+		private float x;
+		private float z;
+		private float y;
+
+		private bool _targetLock = false;
+		private bool _targetLockedSuccsess = false;
+
+		private RaycastHit hit;
+
+		private float _time = 0;
+		private float _waitTime = 0;
+		private int _count = 0;
 
 		// Start is called before the first frame update
 		void Start()
 		{
 			if (Player == null) Player = GameObject.FindWithTag("Player").transform;
+			_audioSource = GetComponent<AudioSource>();
 		}
 
 		// Update is called once per frame
@@ -59,7 +78,7 @@ namespace CyberVault
 				TurretBody.localRotation = Quaternion.Euler(0, yrot, 0);
 				TurretWeapon.localRotation = Quaternion.Euler(xrot, 0, -90);
 
-				RaycastHit hit;
+
 
 				int layer = 6;
 				layer = 1 << layer;
@@ -67,18 +86,91 @@ namespace CyberVault
 
 				Physics.Raycast(TurretBody.position, Player.position - TurretBody.position, out hit, Vector3.Distance(TurretBody.position, Player.position), layer);
 
+				_time += Time.deltaTime;
+
 				// move to IEnerator
 				if (hit.collider != null && hit.transform.gameObject.layer == 3)
 				{
+					_targetLock = true;
 
-					Player.GetComponent<IHealth>()?.TakeDamage(Damage);
+					StartCoroutine(TurretShoot());
+
 				}
+				else
+				{
+					_targetLock = false;
+					_targetLockedSuccsess = false;
+					_count = 0;
+					_waitTime = 0;
+				}
+
+
 			}
 			else
 			{
 				Spot.intensity = 0;
 				Point.intensity = 0;
+				StopCoroutine(TurretShoot());
 			}
+		}
+
+		private IEnumerator TurretShoot()
+		{
+
+			while (!_targetLockedSuccsess && _targetLock)
+			{
+				if (_waitTime < _time)
+				{
+					_audioSource.Stop();
+					_audioSource.clip = BeepSFX;
+					_audioSource.Play();
+
+					_count++;
+					_waitTime = _time + 0.2f;
+				}
+
+				if (_count >= 4)
+				{
+					_targetLockedSuccsess = true;
+					_waitTime = 0;
+				}
+
+				yield return new();
+			}
+
+
+
+
+			while (_targetLock && _targetLockedSuccsess)
+			{
+				if (_waitTime < _time)
+				{
+					print("ENGAGING");
+					_audioSource.Stop();
+					_audioSource.clip = ShotSFX;
+					_audioSource.Play();
+					Player.GetComponent<IHealth>().TakeDamage(Damage);
+
+
+					_waitTime = _time + FireRate;
+				}
+
+				yield return new();
+
+			}
+
+			if (!_targetLock && _targetLockedSuccsess)
+			{
+				print("lost target");
+				_audioSource.Stop();
+				_audioSource.clip = BeepSFX;
+				_audioSource.Play();
+				_targetLockedSuccsess = false;
+				_count = 0;
+				_waitTime = 0;
+			}
+
+			yield return new();
 		}
 	}
 }
