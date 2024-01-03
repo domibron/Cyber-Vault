@@ -16504,6 +16504,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: GasTube (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 333672417678131200, guid: 0af1dc75e06e857489363a3455d9efdf, type: 3}
+      propertyPath: InitialModule.maxNumParticles
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 333672417678131200, guid: 0af1dc75e06e857489363a3455d9efdf, type: 3}
+      propertyPath: InitialModule.startLifetime.scalar
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 2507778262452555637, guid: 0af1dc75e06e857489363a3455d9efdf, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -19359,12 +19367,16 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 333672417678131200, guid: 0af1dc75e06e857489363a3455d9efdf, type: 3}
+      propertyPath: InitialModule.maxNumParticles
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 333672417678131200, guid: 0af1dc75e06e857489363a3455d9efdf, type: 3}
       propertyPath: InitialModule.startSize.scalar
       value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 333672417678131200, guid: 0af1dc75e06e857489363a3455d9efdf, type: 3}
       propertyPath: InitialModule.startLifetime.scalar
-      value: 60
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 333672417678131200, guid: 0af1dc75e06e857489363a3455d9efdf, type: 3}
       propertyPath: SizeModule.curve.maxCurve.m_Curve.Array.data[1].time
@@ -25354,12 +25366,16 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 333672417678131200, guid: 0af1dc75e06e857489363a3455d9efdf, type: 3}
+      propertyPath: InitialModule.maxNumParticles
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 333672417678131200, guid: 0af1dc75e06e857489363a3455d9efdf, type: 3}
       propertyPath: InitialModule.startSize.scalar
       value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 333672417678131200, guid: 0af1dc75e06e857489363a3455d9efdf, type: 3}
       propertyPath: InitialModule.startLifetime.scalar
-      value: 60
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 333672417678131200, guid: 0af1dc75e06e857489363a3455d9efdf, type: 3}
       propertyPath: SizeModule.curve.maxCurve.m_Curve.Array.data[1].time
