@@ -9,6 +9,9 @@ namespace CyberVault
 	{
 		public static Computer Instance;
 
+		// dont do this ever!! have a proper animation script!
+		public Animator Animator;
+
 		public bool UsingComputer = false;
 
 		public GameObject UIMain;
@@ -86,6 +89,8 @@ namespace CyberVault
 				GameManager.Instance.PlayerLockLook = true;
 				GameManager.Instance.PlayerLockMovement = true;
 				GameManager.Instance.PlayerMouseVisible = true;
+
+				Animator.SetBool("pluggedin", true);
 			}
 
 		}
@@ -101,6 +106,8 @@ namespace CyberVault
 				GameManager.Instance.PlayerLockLook = false;
 				GameManager.Instance.PlayerLockMovement = false;
 				GameManager.Instance.PlayerMouseVisible = false;
+
+				Animator.SetBool("pluggedin", false);
 			}
 		}
 

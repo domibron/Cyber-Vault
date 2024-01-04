@@ -1,12 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace CyberVault
 {
 	public class Door : MonoBehaviour
 	{
 		public Animator Animator;
+
+		public UnityEvent OnDoorOpen;
+		public UnityEvent OnDoorClose;
 
 		//public bool Open = false;
 
@@ -34,11 +38,18 @@ namespace CyberVault
 			if (GameManager.Instance.DoorUnlocked)
 			{
 				Animator.SetBool("open", true);
+				OnDoorOpen.Invoke();
 			}
 			else
 			{
 				Animator.SetBool("open", false);
 			}
+		}
+
+		public void CloseDoor()
+		{
+			OnDoorClose.Invoke();
+			Animator.SetBool("open", false);
 		}
 	}
 }

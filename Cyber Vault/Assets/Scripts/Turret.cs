@@ -104,6 +104,8 @@ namespace CyberVault
 					_waitTime = 0;
 				}
 
+				Spot.intensity = 5;
+				Point.intensity = 150;
 
 			}
 			else

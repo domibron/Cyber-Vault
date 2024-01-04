@@ -29,6 +29,8 @@ namespace CyberVault
 
 		public bool BorkenKeyFixed = false;
 
+		public bool Dead = false;
+		public bool Won = false;
 
 
 		[Header("Player State")]

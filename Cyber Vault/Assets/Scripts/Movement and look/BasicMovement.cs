@@ -18,6 +18,9 @@ namespace CyberVault
 		public float JumpHeight = 1.4f;
 
 
+		public Animator Animator;
+
+
 		private CharacterController _characterContoller;
 
 		private Vector3 velocity;
@@ -52,6 +55,15 @@ namespace CyberVault
 			moveDirection = transform.right * moveDirection.x + transform.forward * moveDirection.z;
 
 			moveDirection.Normalize();
+
+			if (moveDirection.x != 0 || moveDirection.z != 0)
+			{
+				Animator.SetBool("moving", true);
+			}
+			else
+			{
+				Animator.SetBool("moving", false);
+			}
 
 			_characterContoller.Move(moveDirection * Speed * Time.deltaTime);
 		}

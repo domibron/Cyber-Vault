@@ -18,6 +18,8 @@ namespace CyberVault
 
 		private Camera _camera;
 
+		public Animator Animator;
+
 		// Start is called before the first frame update
 		void Awake()
 		{
@@ -97,6 +99,7 @@ namespace CyberVault
 				if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.F))
 				{
 					_selectedObject.GetComponent<ItemInteract>().OnInteraction();
+					Animator.SetTrigger("press");
 				}
 			}
 		}
