@@ -119,7 +119,7 @@ namespace CyberVault
 
 				Computer.Instance.OverridingEscape = true;
 
-				DrawHack(_hackScreenArrayInt, _firstTimeSetup);
+				DrawHack(_hackScreenArrayInt);
 
 				if (_firstTimeSetup) _firstTimeSetup = !_firstTimeSetup;
 
@@ -268,15 +268,19 @@ namespace CyberVault
 					StartCoroutine(Failed());
 				}
 
-
+				_allStarsCollected = true;
 				foreach (Vector2Int star in _starLocations.ToList<Vector2Int>())
 				{
-					_allStarsCollected = true;
+
 					// print(_hackScreenArrayInt[star.y, star.x]);
+
+
 					if (_hackScreenArrayInt[star.y, star.x] != 5)
 					{
 						_allStarsCollected = false;
 					}
+
+
 				}
 
 
@@ -434,6 +438,8 @@ namespace CyberVault
 
 			CopyArray(array, ref _hackScreenArrayInt);
 
+			_starLocations.Clear();
+
 			DrawHack(array, true);
 
 			_hackType = hackType;
@@ -508,6 +514,8 @@ namespace CyberVault
 					{
 						_hackScreenArrayImages[x, y].sprite = StarSprite;
 						_hackScreenArrayImages[x, y].color = Color.white;
+
+
 
 						// fipped because easier.
 						if (setVars)
