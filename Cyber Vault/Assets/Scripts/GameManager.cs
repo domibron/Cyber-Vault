@@ -102,7 +102,14 @@ namespace CyberVault
 
 		public void RepairKey()
 		{
-			BorkenKeyFixed = true;
+			if (HasBrokenKeyPartOne && HasBrokenKeyPartTwo && HasGlassCutter)
+			{
+				BorkenKeyFixed = true;
+			}
+			else
+			{
+				// want to let player know they need the parts
+			}
 		}
 
 		public void CollectGlassCutter()
