@@ -357,14 +357,17 @@ namespace CyberVault
 			if (_hackType == HackType.Door)
 			{
 				GameManager.Instance.DoorUnlocked = true;
+				GameManager.Instance.RemoveTask(DoorTaskID);
 			}
 			else if (_hackType == HackType.Lasers)
 			{
 				GameManager.Instance.LasersOnline = false;
+				GameManager.Instance.RemoveTask(LaserTaskID);
 			}
 			else if (_hackType == HackType.Turrets)
 			{
 				GameManager.Instance.TurretsOnline = false;
+				GameManager.Instance.RemoveTask(TurretTaskID);
 			}
 
 			bool skip = false;

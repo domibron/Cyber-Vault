@@ -90,6 +90,8 @@ namespace CyberVault
 				GameManager.Instance.PlayerLockMovement = true;
 				GameManager.Instance.PlayerMouseVisible = true;
 
+				PauseMenu.instance.OverridingPause = true;
+
 				Animator.SetBool("pluggedin", true);
 			}
 
@@ -106,6 +108,8 @@ namespace CyberVault
 				GameManager.Instance.PlayerLockLook = false;
 				GameManager.Instance.PlayerLockMovement = false;
 				GameManager.Instance.PlayerMouseVisible = false;
+
+				PauseMenu.instance.OverridingPause = false;
 
 				Animator.SetBool("pluggedin", false);
 			}

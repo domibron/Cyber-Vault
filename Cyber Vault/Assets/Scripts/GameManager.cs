@@ -35,6 +35,8 @@ namespace CyberVault
 
 		public bool BorkenKeyFixed = false;
 
+		public bool HasDataShard = false;
+
 		public bool Dead = false;
 		public bool Won = false;
 
@@ -143,7 +145,10 @@ namespace CyberVault
 		}
 
 
-
+		public void EndGame(bool isWin)
+		{
+			EndGameState.instance.EndGame(isWin);
+		}
 
 
 

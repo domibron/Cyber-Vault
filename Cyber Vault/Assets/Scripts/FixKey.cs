@@ -12,6 +12,8 @@ namespace CyberVault
 
 		public GameObject LightIndicator;
 
+		public Objective Objective;
+
 		// Start is called before the first frame update
 		void Start()
 		{
@@ -21,7 +23,10 @@ namespace CyberVault
 		// Update is called once per frame
 		void Update()
 		{
-
+			if (GameManager.Instance.HasBrokenKeyPartOne && GameManager.Instance.HasBrokenKeyPartTwo && GameManager.Instance.HasGlassCutter && !Objective.AddedTask)
+			{
+				Objective.AddTask();
+			}
 		}
 
 		public void Interact()
@@ -30,6 +35,7 @@ namespace CyberVault
 			{
 				StartCoroutine(ChangeMat(Good));
 				GameManager.Instance.RepairKey();
+				Objective.CompleateTask();
 			}
 			else
 			{

@@ -129,8 +129,6 @@ namespace CyberVault
 					_audioSource.clip = BeepSFX;
 					_audioSource.Play();
 
-					Effects.Play();
-
 					_count++;
 					_waitTime = _time + FireRate;
 				}
@@ -155,6 +153,9 @@ namespace CyberVault
 					_audioSource.Stop();
 					_audioSource.clip = ShotSFX;
 					_audioSource.Play();
+
+					Effects.Play();
+
 					Player.GetComponent<IHealth>().TakeDamage(Damage);
 
 

@@ -50,7 +50,11 @@ namespace CyberVault
 				{
 					dead = true;
 					StartCoroutine(EndGame());
+
+					GameManager.Instance.EndGame(false);
 				}
+
+
 				// DIE
 			}
 		}
