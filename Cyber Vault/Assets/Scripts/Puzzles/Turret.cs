@@ -28,6 +28,8 @@ namespace CyberVault
 		public AudioClip ShotSFX;
 		public AudioClip BeepSFX;
 
+		public ParticleSystem Effects;
+
 		private float x;
 		private float z;
 		private float y;
@@ -121,14 +123,16 @@ namespace CyberVault
 
 			while (!_targetLockedSuccsess && _targetLock)
 			{
-				if (_waitTime < _time)
+				if (_time > _waitTime)
 				{
 					_audioSource.Stop();
 					_audioSource.clip = BeepSFX;
 					_audioSource.Play();
 
+					Effects.Play();
+
 					_count++;
-					_waitTime = _time + 0.2f;
+					_waitTime = _time + FireRate;
 				}
 
 				if (_count >= 4)

@@ -14,6 +14,11 @@ namespace CyberVault
 			OnInteract.Invoke();
 		}
 
+		void Awake()
+		{
+			gameObject.tag = "Interactable";
+		}
+
 		void Start()
 		{
 			Outline outline = GetComponent<Outline>();

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 
@@ -14,6 +15,8 @@ namespace CyberVault
 		public Transform Player;
 
 		public TMP_Text TimerText;
+		public TMP_Text TaskBox;
+		public TMP_Text HintBox;
 
 		private BasicMovement _movement;
 		private BasicLookScript _look;
@@ -36,6 +39,13 @@ namespace CyberVault
 		public bool Won = false;
 
 		public float Timer = 0;
+
+		public string TaskBoxString = "";
+		// int is the ID and the string is the tasks.
+		public Dictionary<int, string> Tasks = new Dictionary<int, string>();
+		public int TaskCounter { get; private set; } = 0;
+
+		public string HintBoxString = "";
 
 		[Header("Player State")]
 		public bool PlayerLockMovement = false;
@@ -73,6 +83,15 @@ namespace CyberVault
 			}
 
 			TimerText.text = Timer.ToString("00.00");
+
+			TaskBoxString = "";
+			foreach (var item in Tasks)
+			{
+				TaskBoxString += "* - " + item.Value + "\n";
+			}
+
+			TaskBox.text = TaskBoxString;
+			HintBox.text = HintBoxString;
 		}
 
 		public void LookLockToggle()
@@ -108,7 +127,8 @@ namespace CyberVault
 			}
 			else
 			{
-				// want to let player know they need the parts
+				// we want to let player know they need the parts,
+				// but not here.
 			}
 		}
 
@@ -120,6 +140,47 @@ namespace CyberVault
 		public void FixKey()
 		{
 			BorkenKeyFixed = true;
+		}
+
+
+
+
+
+
+		// ===================== For the task display
+
+		public int AddTask(string text)
+		{
+			print("Running");
+			foreach (var item in Tasks)
+			{
+				if (item.Value == text)
+				{
+					print($"{item.Value} == {text}");
+					return item.Key;
+				}
+			}
+
+			TaskCounter++;
+			Tasks.Add(TaskCounter, text);
+			return TaskCounter;
+
+		}
+
+		public void RemoveTask(string text)
+		{
+			foreach (var item in Tasks)
+			{
+				if (item.Value == text)
+				{
+					Tasks.Remove(item.Key);
+				}
+			}
+		}
+
+		public void RemoveTask(int ID)
+		{
+			Tasks.Remove(ID);
 		}
 	}
 

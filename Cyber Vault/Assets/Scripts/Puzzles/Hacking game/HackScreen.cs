@@ -59,6 +59,10 @@ namespace CyberVault
 		private float _boxWidth;
 		private float _boxHeight;
 
+		private int DoorTaskID = -1;
+		private int LaserTaskID = -1;
+		private int TurretTaskID = -1;
+
 		// player
 		private Vector2Int _currentPos = new Vector2Int();
 		private Vector2Int _endPos = new Vector2Int();
@@ -73,6 +77,13 @@ namespace CyberVault
 		private bool _successful = false;
 
 		private HackType _hackType = HackType.None;
+
+		void Awake()
+		{
+			DoorTaskID = GameManager.Instance.AddTask("Hack the door");
+			LaserTaskID = GameManager.Instance.AddTask("Hack the lasers");
+			TurretTaskID = GameManager.Instance.AddTask("Hack the turrets");
+		}
 
 		// Start is called before the first frame update
 		void Start()
@@ -107,6 +118,8 @@ namespace CyberVault
 					_hackScreenArrayImages[(YAmmount - 1) - y, x] = _temp;
 				}
 			}
+
+
 		}
 
 		// Update is called once per frame
