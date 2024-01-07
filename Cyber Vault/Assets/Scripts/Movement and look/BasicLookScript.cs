@@ -23,6 +23,8 @@ namespace CyberVault
 		void Start()
 		{
 			_playerBody = GetComponent<Transform>();
+
+			Locked = false;
 		}
 
 		// Update is called once per frame

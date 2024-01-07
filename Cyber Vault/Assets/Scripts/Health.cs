@@ -12,6 +12,10 @@ namespace CyberVault
 		public float MaxHealth;
 		public float CurrentHealth;
 
+		public Animator CameraAnimator;
+
+		private bool dead = false;
+
 		public void TakeDamage(float damage)
 		{
 			CurrentHealth -= damage;
@@ -36,8 +40,33 @@ namespace CyberVault
 
 			if (CurrentHealth < 0)
 			{
+
+
+
+				GameManager.Instance.PlayerLockLook = true;
+				GameManager.Instance.PlayerLockMovement = true;
+
+				if (!dead)
+				{
+					dead = true;
+					StartCoroutine(EndGame());
+
+					GameManager.Instance.EndGame(false);
+				}
+
+
 				// DIE
 			}
 		}
+
+		IEnumerator EndGame()
+		{
+			CameraAnimator.SetBool("dead", true);
+			yield return new WaitForSeconds(2f);
+
+			GameManager.Instance.Dead = true;
+		}
+
+
 	}
 }

@@ -12,10 +12,14 @@ namespace CyberVault
 
 
 		public float Speed = 5f;
+		public float SprintSpeed = 10f;
 
 		public float Gravity = -9.81f;
 
 		public float JumpHeight = 1.4f;
+
+
+		public Animator Animator;
 
 
 		private CharacterController _characterContoller;
@@ -29,6 +33,8 @@ namespace CyberVault
 		void Start()
 		{
 			_characterContoller = GetComponent<CharacterController>();
+
+			Locked = false;
 		}
 
 		// Update is called once per frame
@@ -53,7 +59,23 @@ namespace CyberVault
 
 			moveDirection.Normalize();
 
-			_characterContoller.Move(moveDirection * Speed * Time.deltaTime);
+			if (moveDirection.x != 0 || moveDirection.z != 0)
+			{
+				Animator.SetBool("moving", true);
+			}
+			else
+			{
+				Animator.SetBool("moving", false);
+			}
+
+			if (Input.GetKey(KeyCode.LeftShift))
+			{
+				_characterContoller.Move(moveDirection * SprintSpeed * Time.deltaTime);
+			}
+			else
+			{
+				_characterContoller.Move(moveDirection * Speed * Time.deltaTime);
+			}
 		}
 
 		private void HandleGravity()
