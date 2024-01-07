@@ -89,12 +89,14 @@ namespace CyberVault
 		// Update is called once per frame
 		void Update()
 		{
+
 			if (avalibleObjects) Check(_camera.ScreenPointToRay(Input.mousePosition));
 
 			if (_selectedObject != null)
 			{
 				_selectedObject.GetComponent<Outline>().OutlineWidth = 10;
 
+				_selectedObject.GetComponent<IHintBox>()?.OnHover();
 
 				if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.F))
 				{

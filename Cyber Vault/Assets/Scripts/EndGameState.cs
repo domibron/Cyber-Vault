@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SceneManagement;
+using Unity.VisualScripting;
 
 namespace CyberVault
 {
@@ -48,8 +49,15 @@ namespace CyberVault
 			Computer.Instance.ExitComputer();
 			Computer.Instance.enabled = false;
 
+			PauseMenu.instance.Resume();
 			PauseMenu.instance.Open = false;
+			PauseMenu.instance.PauseMenuScreen.gameObject.SetActive(false);
 			PauseMenu.instance.enabled = false;
+
+			GameManager.Instance.PlayerMouseVisible = true;
+
+			GameManager.Instance.PlayerLockLook = true;
+			GameManager.Instance.PlayerLockMovement = true;
 
 
 			if (win)
@@ -64,9 +72,23 @@ namespace CyberVault
 
 		IEnumerator Win()
 		{
-			TimerText.text = GameManager.Instance.TimerText.text;
 
-			yield return new WaitForSeconds(2f);
+			if (GameManager.Instance.Timer < PlayerPrefs.GetFloat("bt", 999999))
+			{
+				TimerText.text = "New time! " + GameManager.Instance.TimerText.text;
+
+				PlayerPrefs.SetString("bts", GameManager.Instance.TimerText.text);
+				PlayerPrefs.SetFloat("bt", GameManager.Instance.Timer);
+				PlayerPrefs.Save();
+			}
+			else
+			{
+
+				TimerText.text = $"Time to beat: {PlayerPrefs.GetString("bts", "00:00.00")}\nTime achieved: {GameManager.Instance.TimerText.text}";
+			}
+
+
+			yield return new WaitForSeconds(0.1f);
 
 			WinScreen.SetActive(true);
 
@@ -92,6 +114,11 @@ namespace CyberVault
 		public void MainMenu()
 		{
 			SceneManager.LoadScene(0);
+		}
+
+		public void Quit()
+		{
+			Application.Quit();
 		}
 	}
 }

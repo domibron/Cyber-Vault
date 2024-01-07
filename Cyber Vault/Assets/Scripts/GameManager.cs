@@ -35,6 +35,8 @@ namespace CyberVault
 
 		public bool BorkenKeyFixed = false;
 
+		public bool RemovedGlass = false;
+
 		public bool HasDataShard = false;
 
 		public bool Dead = false;
@@ -63,6 +65,8 @@ namespace CyberVault
 			else
 			{
 				Instance = this;
+
+				AddTask("TASKS:");
 			}
 		}
 
@@ -84,7 +88,7 @@ namespace CyberVault
 				Timer += Time.deltaTime;
 			}
 
-			TimerText.text = Timer.ToString("00.00");
+			TimerText.text = Mathf.Floor(Timer / 60).ToString("00:") + (Timer % 60f).ToString("00.00");
 
 			TaskBoxString = "";
 			foreach (var item in Tasks)

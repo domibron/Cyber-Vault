@@ -10,6 +10,8 @@ namespace CyberVault
 
 		public Objective Objective;
 
+		public GlassCutter glassCutter;
+
 		// Start is called before the first frame update
 		void Start()
 		{
@@ -31,6 +33,7 @@ namespace CyberVault
 			{
 				Door.OpenDoor();
 				Objective.CompleateTask();
+				glassCutter.StartTask();
 			}
 		}
 	}

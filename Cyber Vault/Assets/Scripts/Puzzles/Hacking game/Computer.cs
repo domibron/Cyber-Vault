@@ -78,29 +78,41 @@ namespace CyberVault
 
 		public void UseComputer()
 		{
+
+
 			// save me making a call to the interactavble sctipt thing.
-			if (!UsingComputer)
-			{
-				UsingComputer = true;
+			if (!UsingComputer) StartCoroutine(StartUsingComputer());
 
-				UIMain.SetActive(true);
-				OpenScreen(0);
 
-				GameManager.Instance.PlayerLockLook = true;
-				GameManager.Instance.PlayerLockMovement = true;
-				GameManager.Instance.PlayerMouseVisible = true;
 
-				PauseMenu.instance.OverridingPause = true;
+		}
 
-				Animator.SetBool("pluggedin", true);
-			}
+		public IEnumerator StartUsingComputer()
+		{
+			PauseMenu.instance.OverridingPause = true;
+			PauseMenu.instance.Resume();
 
+			Animator.SetBool("pluggedin", true);
+
+			yield return new WaitForSeconds(0.9f);
+
+
+			UIMain.SetActive(true);
+			OpenScreen(0);
+
+			GameManager.Instance.PlayerLockLook = true;
+			GameManager.Instance.PlayerLockMovement = true;
+			GameManager.Instance.PlayerMouseVisible = true;
+
+			UsingComputer = true;
 		}
 
 		public void ExitComputer()
 		{
 			if (UsingComputer)
 			{
+				StopCoroutine(StartUsingComputer());
+
 				UsingComputer = false;
 				OpenScreen(0);
 				UIMain.SetActive(false);

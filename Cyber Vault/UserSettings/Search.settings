@@ -13,6 +13,12 @@ scopes = {
 	"last_search.0B486DF2" = ""
 	"OpenInspectorPreview.0B486DF2" = "0"
 	"currentGroup.0B486DF2" = null
+	"last_search.98CF4AA6" = ""
+	"OpenInspectorPreview.98CF4AA6" = "0"
+	"currentGroup.98CF4AA6" = "scene"
+	"last_search.8DF93126" = ""
+	"OpenInspectorPreview.8DF93126" = "0"
+	"currentGroup.8DF93126" = null
 }
 providers = {
 	log = {
@@ -69,6 +75,7 @@ providers = {
 objectSelectors = {
 }
 recentSearches = [
+	"interaction"
 ]
 searchItemFavorites = [
 ]

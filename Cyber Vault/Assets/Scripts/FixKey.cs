@@ -39,6 +39,7 @@ namespace CyberVault
 			}
 			else
 			{
+				PlayerInteractionText.instance.CreateNewHint(5, "<color=red>Cant");
 				StartCoroutine(ChangeMat(Bad));
 			}
 		}
